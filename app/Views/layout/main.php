@@ -19,7 +19,7 @@
     <button class="btn btn-outline-primary" id="toggleSidebar">
         ☰
     </button>
-    <span class="fw-bold ms-2">MCP Systemm</span>
+    <span class="fw-bold ms-2">MCP System</span>
 </nav>
 
 <!-- Layout Wrapper -->
@@ -34,7 +34,7 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link <?= ($active ?? '') == 'dashboard' ? 'active-link' : '' ?>" href="/">
-                        🏠 Dashboard
+                        🏠 Dashboardd
                     </a>
                 </li>
                 <li class="nav-item">
