@@ -19,10 +19,13 @@
 <?php endif ?>
 
 <!-- Button tambah -->
+
 <div class="mb-3">
+    <?php if (canCreate('maintenance')): ?>
     <a href="<?= base_url('maintenance-engine/create') ?>" class="btn btn-primary">
         + Tambah Maintenance
     </a>
+    <?php endif; ?>
 </div>
 
 <!-- Table -->
@@ -58,15 +61,20 @@
                             <td class="text-center"><?= date('d-m-Y', strtotime($row['tanggal'])) ?></td>
                             <td><?= esc($row['keterangan']) ?></td>
                             <td class="text-center">
+                                <?php if (canEdit('maintenance')): ?>
                                 <a href="<?= base_url('maintenance-engine/edit/'.$row['id']) ?>"
                                    class="btn btn-sm btn-warning">
                                     Edit
                                 </a>
+                                <?php endif; ?>
+
+                                <?php if (canDelete('maintenance')): ?>
                                 <a href="<?= base_url('maintenance-engine/delete/'.$row['id']) ?>"
                                    class="btn btn-sm btn-danger"
                                    onclick="return confirm('Yakin hapus data maintenance ini?')">
                                     Hapus
                                 </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach ?>

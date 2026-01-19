@@ -7,9 +7,12 @@
     <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
 <?php endif; ?>
 
-<a href="/pekerjaan/create" class="btn btn-primary mb-3">
-    + Tambah Pekerjaan
-</a>
+<?php if (canCreate('pekerjaan')): ?>
+    <a href="/pekerjaan/create" class="btn btn-primary mb-3">
+        + Tambah Pekerjaan
+    </a>
+<?php endif; ?>
+
 
 <div class="card shadow-sm">
     <div class="card-body">
@@ -41,16 +44,15 @@
                     <td><?= esc($p['nikKaryawan']) ?></td>
                     <td><?= esc($p['status']) ?></td>
                     <td class="text-center">
-                        <a href="/pekerjaan/edit/<?= $p['id'] ?>" 
-                           class="btn btn-warning btn-sm">
-                           Edit
-                        </a>
+                        <?php if (canEdit('pekerjaan')): ?>
+                            <a href="/pekerjaan/edit/<?= $p['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                        <?php endif; ?>
 
-                        <a href="/pekerjaan/delete/<?= $p['id'] ?>" 
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Hapus data ini?')">
-                           Hapus
-                        </a>
+                        <?php if (canDelete('pekerjaan')): ?>
+                            <a href="/pekerjaan/delete/<?= $p['id'] ?>"
+                            class="btn btn-sm btn-danger"
+                            onclick="return confirm('Hapus data?')">Delete</a>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach ?>

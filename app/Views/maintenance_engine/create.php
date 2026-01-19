@@ -1,139 +1,90 @@
 <?= $this->extend('layout/mainDashboardLogin') ?>
 <?= $this->section('content') ?>
 
-<h3 class="mb-4">Tambah Maintenance Engine</h3>
+<h4 class="mb-4">Tambah Maintenance Engine</h4>
 
-<!-- Alert -->
-<?php if (session()->getFlashdata('error')): ?>
-    <div class="alert alert-danger alert-dismissible fade show">
-        <?= session()->getFlashdata('error') ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<form action="<?= base_url('/maintenance-engine/store') ?>" method="post">
+    <?= csrf_field() ?>
+
+    <!-- KARYAWAN -->
+    <div class="mb-3">
+        <label class="form-label">Karyawan Bertugas</label>
+        <select name="user_id" class="form-select" required>
+            <option value="">-- Pilih Karyawan --</option>
+            <?php foreach ($karyawan as $k): ?>
+                <option value="<?= $k['id'] ?>">
+                    <?= esc($k['nama']) ?> (<?= esc($k['nik']) ?>)
+                </option>
+            <?php endforeach; ?>
+        </select>
     </div>
-<?php endif ?>
 
-<div class="card shadow-sm border-0">
-    <div class="card-body">
 
-        <form action="<?= base_url('maintenance-engine/store') ?>" method="post">
-            <?= csrf_field() ?>
-
-            <div class="row g-3">
-
-                <!-- Engine -->
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Engine</label>
-                    <select name="idbarang" class="form-select" required>
-                        <option value="">-- Pilih Engine --</option>
-                        <?php foreach ($engine as $e): ?>
-                            <option value="<?= $e['id'] ?>">
-                                <?= esc($e['nama_barang']) ?>
-                            </option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-
-                <!-- Tanggal -->
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Tanggal Maintenance</label>
-                    <input type="date"
-                           name="tanggal"
-                           class="form-control"
-                           required>
-                </div>
-
-                <!-- Jenis Maintenance -->
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Jenis Maintenance</label>
-                    <select name="jenis_maintenance"
-                            id="jenisMaintenance"
-                            class="form-select"
-                            required>
-                        <option value="">-- Pilih Jenis --</option>
-                        <option value="oli">Ganti Oli</option>
-                        <option value="overhaul">Overhaul</option>
-                        <option value="filter">Filter</option>
-                        <option value="sampling oli">Sampling Oli</option>
-                        <option value="lainnya">Lainnya</option>
-                    </select>
-                </div>
-
-                <!-- Jenis Manual -->
-                <div class="col-md-6" id="jenisLainBox" style="display:none;">
-                    <label class="form-label fw-bold">Jenis Maintenance (Manual)</label>
-                    <input type="text"
-                           name="jenis_lain"
-                           class="form-control"
-                           placeholder="Masukkan jenis maintenance">
-                </div>
-
-                <!-- HM Saat Maintenance -->
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">HM Saat Maintenance</label>
-                    <input type="number"
-                           step="0.01"
-                           name="hm_saat_maintenance"
-                           class="form-control"
-                           placeholder="Contoh: 12000"
-                           required>
-                </div>
-
-                <!-- Interval HM -->
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Interval HM</label>
-                    <input type="number"
-                           step="0.01"
-                           name="interval_hm"
-                           id="intervalHM"
-                           class="form-control"
-                           value="2000"
-                           required>
-                    <small class="text-muted">
-                        Default oli: 2000 jam
-                    </small>
-                </div>
-
-                <!-- Keterangan -->
-                <div class="col-12">
-                    <label class="form-label fw-bold">Keterangan</label>
-                    <textarea name="keterangan"
-                              class="form-control"
-                              rows="3"
-                              placeholder="Catatan tambahan (opsional)"></textarea>
-                </div>
-
-            </div>
-
-            <!-- Action -->
-            <div class="d-flex justify-content-end gap-2 mt-4">
-                <a href="<?= base_url('maintenance-engine') ?>" class="btn btn-secondary">
-                    Batal
-                </a>
-                <button type="submit" class="btn btn-primary">
-                    Simpan Maintenance
-                </button>
-            </div>
-
-        </form>
-
+    <!-- ENGINE -->
+    <div class="mb-3">
+        <label class="form-label">Engine</label>
+        <select name="idbarang" class="form-select" required>
+            <option value="">-- Pilih Engine --</option>
+            <?php foreach ($engine as $e): ?>
+                <option value="<?= $e['id'] ?>">
+                    <?= esc($e['nama_barang']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
     </div>
-</div>
 
-<!-- Script -->
+    <!-- JENIS -->
+    <div class="mb-3">
+        <label class="form-label">Jenis Maintenance</label>
+        <select name="jenis_maintenance" id="jenisMaintenance" class="form-select" required>
+            <option value="">-- Pilih --</option>
+            <option value="oli">Ganti Oli</option>
+            <option value="overhaul">Overhaul</option>
+            <option value="lainnya">Lainnya</option>
+        </select>
+    </div>
+
+    <div class="mb-3 d-none" id="jenisLainnya">
+        <label class="form-label">Jenis Lainnya</label>
+        <input type="text" name="jenis_lain" class="form-control">
+    </div>
+
+    <!-- HM -->
+    <div class="mb-3">
+        <label class="form-label">HM Saat Maintenance</label>
+        <input type="number" name="hm_saat_maintenance" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Interval HM</label>
+        <input type="number" name="interval_hm" class="form-control">
+        <small class="text-muted">Otomatis 2000 jika ganti oli</small>
+    </div>
+
+    <!-- TANGGAL -->
+    <div class="mb-3">
+        <label class="form-label">Tanggal</label>
+        <input type="date" name="tanggal" class="form-control" required>
+    </div>
+
+    <!-- KETERANGAN -->
+    <div class="mb-3">
+        <label class="form-label">Keterangan</label>
+        <textarea name="keterangan" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Simpan
+    </button>
+    <a href="<?= base_url('/maintenance-engine') ?>" class="btn btn-secondary">
+        Batal
+    </a>
+</form>
+
 <script>
 document.getElementById('jenisMaintenance').addEventListener('change', function () {
-    const jenis = this.value;
-    const box = document.getElementById('jenisLainBox');
-    const interval = document.getElementById('intervalHM');
-
-    if (jenis === 'lainnya') {
-        box.style.display = 'block';
-        interval.value = '';
-    } else {
-        box.style.display = 'none';
-        if (jenis === 'oli') {
-            interval.value = 2000;
-        }
-    }
+    document.getElementById('jenisLainnya')
+        .classList.toggle('d-none', this.value !== 'lainnya');
 });
 </script>
 

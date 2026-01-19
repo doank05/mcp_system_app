@@ -52,15 +52,43 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= ($active ?? '') == 'inventory' ? 'active-link' : '' ?>" href="/inventory">
-                        📦 Inventory
-                    </a>
+                <a class="nav-link d-flex justify-content-between align-items-center
+                    <?= in_array(($active ?? ''), ['inventory_engine','inventory_non_engine']) ? 'active-link' : '' ?>"
+                data-bs-toggle="collapse"
+                href="#menuInventory"
+                role="button"
+                aria-expanded="<?= in_array(($active ?? ''), ['inventory_engine','inventory_non_engine']) ? 'true' : 'false' ?>">
+
+                    <span>📦 Inventory</span>
+                    <span class="ms-2">▾</span>
+                </a>
+
+                    <ul class="collapse list-unstyled ps-3
+                        <?= in_array(($active ?? ''), ['inventory_engine','inventory_non_engine']) ? 'show' : '' ?>"
+                        id="menuInventory">
+
+                        <li class="nav-item">
+                            <a class="nav-link <?= ($active ?? '') == 'inventory_engine' ? 'active-link' : '' ?>"
+                            href="/inventory/engine">
+                                ⚙️ Engine
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link <?= ($active ?? '') == 'inventory_non_engine' ? 'active-link' : '' ?>"
+                            href="/inventory/non-engine">
+                                🛠 Non Engine
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
-                <li class="nav-item">
+
+                <!-- <li class="nav-item">
                     <a class="nav-link <?= ($active ?? '') == 'laporan' ? 'active-link' : '' ?>" href="/laporan">
                         📑 Laporan
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link <?= ($active ?? '') == 'about' ? 'active-link' : '' ?>" href="/about">
                         ℹ️ Tentang

@@ -28,11 +28,14 @@
             </button>
         </div>
 
+        
         <div class="col-md-6 text-md-end text-start">
+            <?php if (canCreate('barang')): ?>
             <a href="/barang/create" class="btn btn-primary">
                 + Tambah Barang
             </a>
-        </div>
+            <?php endif; ?>
+            </div>
     </form>
 
     <!-- TABLE -->
@@ -80,19 +83,19 @@
                             </span>
                         </td>
                         <td class="text-center">
-                            <a href="/barang-log/<?= $b['id'] ?>"
-                               class="btn btn-info btn-sm">
-                               Log
-                            </a>
+                            <?php if (canEdit('barang')): ?>
                             <a href="/barang/edit/<?= $b['id'] ?>"
                                class="btn btn-warning btn-sm">
                                Edit
                             </a>
+                            <?php endif; ?>
+                            <?php if (canDelete('barang')): ?>
                             <a href="/barang/delete/<?= $b['id'] ?>"
                                class="btn btn-danger btn-sm"
                                onclick="return confirm('Hapus barang ini?')">
                                Hapus
                             </a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

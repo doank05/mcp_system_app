@@ -32,6 +32,7 @@ class KaryawanController extends BaseController
             'nama'     => $this->request->getPost('nama'),
             'jabatan'  => $this->request->getPost('jabatan'),
             'tmk'      => $this->request->getPost('tmk'),
+            'username' => $this->request->getPost('username'),
             'password' => password_hash(
                 $this->request->getPost('password'),
                 PASSWORD_DEFAULT
@@ -56,6 +57,7 @@ class KaryawanController extends BaseController
             'nama'    => $this->request->getPost('nama'),
             'jabatan' => $this->request->getPost('jabatan'),
             'tmk'     => $this->request->getPost('tmk'),
+            'username'=> $this->request->getPost('username'),
         ];
 
         if ($this->request->getPost('password')) {

@@ -3,7 +3,9 @@
 
 <h4 class="mb-3">Data Engine</h4>
 
-<a href="/data-engine/create" class="btn btn-primary mb-3">+ Tambah Data</a>
+    <?php if (canCreate('data-engine')): ?>
+    <a href="/data-engine/create" class="btn btn-primary mb-3">+ Tambah Data</a>
+    <?php endif ?>
     <form action="<?= base_url('data-engine/previewExcel') ?>"
       method="post"
       enctype="multipart/form-data"
@@ -13,7 +15,7 @@
 
 
     <div class="row g-3 align-items-end">
-
+    <?php if (canCreate('data-engine')): ?>
         <div class="col-md-4">
             <label class="form-label">Pilih Engine</label>
             <select name="idbarang" class="form-select" required>
@@ -40,7 +42,7 @@
                 Import Data Engine
             </button>
         </div>
-
+    <?php endif ?>
     </div>
 
     
@@ -50,52 +52,65 @@
     </form>
 
 
-<table class="table table-bordered table-striped">
-        <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show">
-            <?= session()->getFlashdata('success') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    <?php endif ?>
-
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show">
-            <?= session()->getFlashdata('error') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-<?php endif ?>
-
-    <thead class="table-dark">
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-light">
         <tr>
+            <th>No</th>
             <th>Tanggal</th>
             <th>Engine</th>
             <th>HM Awal</th>
             <th>HM Akhir</th>
             <th>Jam Operasi</th>
             <th>kWh</th>
+            <th>Keterangan</th>
             <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
+
+    <?php if (!empty($data_engine)): ?>
+        <?php
+            $no = 1 + (25 * ($pager->getCurrentPage() - 1));
+        ?>
         <?php foreach ($data_engine as $row): ?>
         <tr>
-            <td><?= $row['tanggal'] ?></td>
-            <td><?= $row['nama_barang'] ?></td>
+            <td><?= $no++ ?></td>
+            <td><?= date('d-m-Y', strtotime($row['tanggal'])) ?></td>
+            <td><?= esc($row['nama_barang']) ?></td>
             <td><?= $row['hm_awal'] ?></td>
             <td><?= $row['hm_akhir'] ?></td>
             <td><?= $row['jam_operasi'] ?></td>
             <td><?= $row['kwh'] ?></td>
+            <td><?= esc($row['keterangan']) ?></td>
             <td>
-                <a href="/data-engine/edit/<?= $row['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
-                <a href="/data-engine/delete/<?= $row['id'] ?>" 
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Hapus data ini?')">
-                   Hapus
+                
+                <?php if (canEdit('data-engine')): ?>
+                <a href="/data-engine/edit/<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                <?php endif ?>
+                
+                <?php if (canDelete('data-engine')): ?>
+                <a href="/data-engine/delete/<?= $row['id'] ?>"
+                   onclick="return confirm('Yakin hapus data ini?')"
+                   class="btn btn-sm btn-danger">
+                    Hapus
                 </a>
+                <?php endif ?>
             </td>
         </tr>
         <?php endforeach ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="9" class="text-center text-muted">
+                Belum ada data engine
+            </td>
+        </tr>
+    <?php endif ?>
+
     </tbody>
-</table>    
+</table>
+
+<div class="mt-3 d-flex justify-content-center">
+    <?= $pager->links('default', 'bootstrap') ?>
+</div>
 
 <?= $this->endSection() ?>

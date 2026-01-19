@@ -10,13 +10,17 @@ class EngineMaintenanceModel extends Model
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
+        'pekerjaan_id',
         'idbarang',
         'jenis_maintenance',
         'hm_saat_maintenance',
         'interval_hm',
         'tanggal',
-        'keterangan'
+        'keterangan',
+        'created_at',
+        'updated_at',
     ];
+
 
     protected $useTimestamps = true;
 }

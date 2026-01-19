@@ -14,7 +14,9 @@ class UserModel extends Model
         'nama',
         'jabatan',
         'password',
-        'tmk'
+        'username',
+        'tmk',
+        'level'
     ];
 
     protected $useTimestamps = false;

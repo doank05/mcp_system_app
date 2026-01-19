@@ -18,8 +18,8 @@
 
         <form method="POST" action="/login">
             <div class="mb-3">
-                <label>NIK</label>
-                <input type="text" class="form-control" name="nik" required>
+                <label>Username</label>
+                <input type="text" class="form-control" name="username" required>
             </div>
 
             <div class="mb-3">

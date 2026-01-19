@@ -21,22 +21,29 @@ class DataEngineController extends BaseController
      * INDEX
      * ======================= */
     public function index()
-    {
-        $data['title'] = 'Data Engine';
+{
+    $data['title'] = 'Data Engine';
 
-        $data['data_engine'] = $this->dataEngine
-            ->select('data_engine.*, barang.nama_barang')
-            ->join('barang', 'barang.id = data_engine.idbarang')
-            ->orderBy('tanggal', 'DESC')
-            ->findAll();
+    // === DATA ENGINE + PAGINATION ===
+    $data['data_engine'] = $this->dataEngine
+        ->select('data_engine.*, barang.nama_barang')
+        ->join('barang', 'barang.id = data_engine.idbarang')
+        ->orderBy('tanggal', 'DESC')
+        ->paginate(25); // <-- jumlah per halaman
 
-        $data['engine'] = $this->barang
-            ->where('kategori', 'engine')
-            ->orderBy('nama_barang', 'ASC')
-            ->findAll();
+    $data['pager'] = $this->dataEngine->pager;
 
-        return view('data_engine/index', $data);
-    }
+    // === LIST ENGINE (UNTUK FILTER / IMPORT) ===
+    $data['engine'] = $this->barang
+        ->where('kategori', 'engine')
+        ->orderBy('nama_barang', 'ASC')
+        ->findAll();
+
+    return view('data_engine/index', $data);
+}
+
+
+    
 
     /* =======================
      * CREATE

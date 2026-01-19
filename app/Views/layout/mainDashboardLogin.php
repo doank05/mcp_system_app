@@ -32,15 +32,21 @@ body {
 .sidebar a {
     display: block;
     padding: 10px 12px;
-    color: #dcdcdc;
-    text-decoration: none;
+    color: #dcdcdc !important;
+    text-decoration: none !important;
     border-radius: 6px;
     font-size: 15px;
 }
 
 .sidebar a:hover {
     background: #2f2f46;
-    color: #fff;
+    color: #fff !important;
+}
+
+.sidebar a.active {
+    background: #4b7bec;
+    color: #fff !important;
+    font-weight: 600;
 }
 
 .submenu a {
@@ -102,32 +108,46 @@ body {
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <h5 class="text-uppercase mb-3">MCP Menu</h5>
-  <hr class="border-secondary">
+<?php use Config\Menu; ?>
 
-  <!-- Maintenance -->
-  <a data-bs-toggle="collapse" href="#menuMaintenance">🛠 Maintenance ▾</a>
-  <div class="collapse submenu" id="menuMaintenance">
-    <a href="/pekerjaan">Maintenance Umum</a>
-    <a href="/maintenance-engine">Maintenance Engine</a>
-  </div>
+<h5 class="text-uppercase mb-3">MCP Menu</h5>
+<hr class="border-secondary">
 
-  <a href="/produksi">⚡ Produksi</a>
+<?php foreach (Menu::get() as $menu): ?>
+    <?php if (! canAccess($menu['level'])) continue; ?>
 
-  <!-- Inventory -->
-  <a data-bs-toggle="collapse" href="#menuBarang">📦 Inventory ▾</a>
-  <div class="collapse submenu" id="menuBarang">
-    <a href="/barang">Data Barang</a>
-    <a href="/engine">Engine</a>
-    <a href="/data-engine">Pemakaian Engine</a>
-  </div>
+    <?php if (($menu['type'] ?? '') === 'group'): ?>
+        <?php $open = isGroupOpen($menu['children']); ?>
 
-  <!-- <a href="/alert">🔔 Alert</a> -->
-  <a href="/karyawan">👤 Data Karyawan</a>
-  <a href="/tahun-aktif">Pengaturan Tahun Aktif</a>
+        <a data-bs-toggle="collapse"
+           href="#menu<?= md5($menu['label']) ?>"
+           class="<?= $open ? '' : 'collapsed' ?>">
+            <?= $menu['icon'] ?> <?= $menu['label'] ?> ▾
+        </a>
 
-  <hr class="border-secondary mt-4">
-  <a href="/logout" class="text-danger">🚪 Logout</a>
+        <div class="collapse submenu <?= $open ? 'show' : '' ?>"
+             id="menu<?= md5($menu['label']) ?>">
+            <?php foreach ($menu['children'] as $child): ?>
+                <?php if (canAccess($child['level'])): ?>
+                    <a href="<?= base_url($child['url']) ?>"
+                       class="<?= isActive($child['url']) ?>">
+                        <?= $child['label'] ?>
+                    </a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+
+    <?php else: ?>
+        <a href="<?= base_url($menu['url']) ?>"
+           class="<?= isActive($menu['url']) ?>">
+            <?= $menu['icon'] ?> <?= $menu['label'] ?>
+        </a>
+    <?php endif; ?>
+<?php endforeach; ?>
+
+<hr class="border-secondary mt-4">
+<a href="/logout" class="text-danger">🚪 Logout</a>
+
 </div>
 
 <!-- CONTENT -->

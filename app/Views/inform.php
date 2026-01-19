@@ -9,7 +9,22 @@
          SECTION: BIOREAKTOR
     ======================== -->
     <section class="mb-5">
-        <h3 class="fw-bold text-primary mb-3">1. Bioreaktor <small class="text-muted">(Belum dilengkapi gambar)</small></h3>
+        <h3 class="fw-bold text-primary mb-3">1. Bioreaktor <small class="text-muted"></small></h3>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-dark text-white fw-bold">
+            🎥 Bioreaktor
+        </div>
+
+        <div class="card-body">
+            <div class="ratio ratio-16x9">
+                <iframe
+                    src="https://www.youtube.com/embed/iBJZv3lBT60"
+                    title="Bioreaktor MCP"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
 
         <div class="card border-0 shadow-sm">
             <div class="card-body text-secondary">
@@ -91,7 +106,23 @@
          SECTION: SCRUBBER & FLARE
     ======================== -->
     <section class="mb-5">
-        <h3 class="fw-bold text-primary mb-3">2. Scrubber & Flare <small class="text-muted">(Belum dilengkapi gambar)</small></h3>
+        <h3 class="fw-bold text-primary mb-3">2. Scrubber & Flare <small class="text-muted"></small></h3>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-dark text-white fw-bold">
+            🎥 Scrubber
+        </div>
+
+        <div class="card-body">
+            <div class="ratio ratio-16x9">
+                <iframe
+                    src="https://www.youtube.com/embed/iBJZv3lBT60"
+                    title="Scrubber MCP"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
 
         <div class="card border-0 shadow-sm">
             <div class="card-body text-secondary">
@@ -144,8 +175,23 @@
          SECTION: ENGINE ROOM
     ======================== -->
     <section class="mb-4">
-        <h3 class="fw-bold text-primary mb-3">3. Engine Room <small class="text-muted">(Belum dilengkapi gambar)</small></h3>
+        <h3 class="fw-bold text-primary mb-3">3. Engine Room <small class="text-muted"></small></h3>
 
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-dark text-white fw-bold">
+            🎥 Engine Room MCP
+        </div>
+
+        <div class="card-body">
+            <div class="ratio ratio-16x9">
+                <iframe
+                    src="https://www.youtube.com/embed/JOV5EX6Rjhk"
+                    title="Engine Room MCP"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
         <div class="card border-0 shadow-sm">
             <div class="card-body text-secondary">
 

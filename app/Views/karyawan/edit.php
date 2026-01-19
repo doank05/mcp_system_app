@@ -35,6 +35,11 @@
 </div>
 
 <div class="mb-3">
+<label class="form-label">Username</label>
+<input type="text" name="username" value="<?= esc($karyawan['username']) ?>" class="form-control" required>
+        </div>
+
+<div class="mb-3">
     <label>Password (kosongkan jika tidak diubah)</label>
     <input type="password" name="password" class="form-control">
 </div>

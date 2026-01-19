@@ -10,14 +10,7 @@ class PekerjaanModel extends Model
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
-        'nama_pekerjaan',
-        'deskripsi',
-        'tanggalMulai',
-        'tanggalSelesai',
-        'bagian',
-        'nikKaryawan',
-        'status'
+        'tipe_pekerjaan',
+        'user_id',
     ];
-
-    protected $useTimestamps = false;
 }

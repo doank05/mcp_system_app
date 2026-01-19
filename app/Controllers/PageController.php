@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\PekerjaanModel;
 use App\Models\UserModel;
+use App\Models\NonEngineMaintenanceModel;
+
 
 class PageController extends BaseController
 {
@@ -31,31 +33,45 @@ class PageController extends BaseController
             'active' => 'alur'
         ]);
     }
-    public function perawatan()
-    {
-    $pekerjaanModel = new PekerjaanModel();
-    $userModel = new UserModel();
 
-    // Ambil data 7 hari terakhir
+
+public function perawatan()
+{
+    $nonEngineModel = new NonEngineMaintenanceModel();
+    $pekerjaanModel = new PekerjaanModel();
+    $userModel      = new UserModel();
+
+    // Rentang 7 hari ke depan
     $today = date('Y-m-d');
     $sevenDaysLater = date('Y-m-d', strtotime('+7 days'));
 
-    $dataPekerjaan = $pekerjaanModel
-        ->where('tanggalMulai <=', $sevenDaysLater)
-        ->where('tanggalMulai >=', $today)
-        ->orderBy('tanggalMulai', 'ASC')
+    // Ambil data non-engine maintenance 7 hari ke depan
+    $dataPekerjaan = $nonEngineModel
+        ->where('tanggal_mulai <=', $sevenDaysLater)
+        ->where('tanggal_selesai >=', $today)
+        ->orderBy('tanggal_mulai', 'ASC')
         ->findAll();
 
-    // Ambil nama karyawan dari tabel users
+    // Lengkapi nama karyawan (JOIN manual agar aman & jelas)
     foreach ($dataPekerjaan as &$p) {
-        $user = $userModel->where('nik', $p['nikKaryawan'])->first();
-        $p['nama_karyawan'] = $user ? $user['nama'] : '-';
+
+        // Ambil pekerjaan (header)
+        $pekerjaan = $pekerjaanModel->find($p['pekerjaan_id']);
+
+        if ($pekerjaan) {
+            // Ambil user berdasarkan user_id (BENER, BUKAN NIK)
+            $user = $userModel->find($pekerjaan['user_id']);
+            $p['nama_karyawan'] = $user['nama'] ?? '-';
+        } else {
+            $p['nama_karyawan'] = '-';
+        }
     }
 
-    $data['pekerjaan'] = $dataPekerjaan;
+    return view('perawatan', [
+        'pekerjaan' => $dataPekerjaan
+    ]);
+}
 
-    return view('perawatan', $data);
-    }
 
     public function laporan()
     {

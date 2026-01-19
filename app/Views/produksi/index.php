@@ -5,9 +5,11 @@
     Data Produksi Harian Tahun <?= esc($tahun) ?>
 </h3>
 
-<a href="/produksi/create" class="btn btn-primary mb-3">
-    + Input Produksi
-</a>
+<?php if (canCreate('produksi')): ?>
+    <a href="/produksi/create" class="btn btn-primary mb-3">
+        + Tambah Produksi
+    </a>
+<?php endif; ?>
 
 <?php if (session()->getFlashdata('success')): ?>
 <div class="alert alert-success">
@@ -15,6 +17,7 @@
 </div>
 <?php endif ?>
 
+<?php if (canCreate('produksi')): ?>
 <div class="card shadow-sm">
 <div class="card-body table-responsive">
 <form action="/produksi/import" method="post" enctype="multipart/form-data"
@@ -36,6 +39,7 @@
         </button>
     </div>
 </div>
+<?php endif; ?>
 
 </form>
 
@@ -83,16 +87,20 @@
             <td><?= number_format($d['biogas_per_pome'], 2) ?></td>
 
             <td class="text-center">
+                <?php if (canEdit('produksi')): ?>
                 <a href="/produksi/edit/<?= $d['id'] ?>"
                    class="btn btn-warning btn-sm">
                     Edit
                 </a>
+                <?php endif; ?>
 
+                <?php if (canDelete('produksi')): ?>
                 <a href="/produksi/delete/<?= $d['id'] ?>"
                    class="btn btn-danger btn-sm"
                    onclick="return confirm('Yakin hapus data produksi ini?')">
                     Hapus
                 </a>
+                <?php endif; ?>
             </td>
         </tr>
         <?php endforeach ?>
