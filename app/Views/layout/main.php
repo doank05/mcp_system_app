@@ -19,7 +19,7 @@
     <button class="btn btn-outline-primary" id="toggleSidebar">
         ☰
     </button>
-    <span class="fw-bold ms-2">MCP System</span>
+    <span class="fw-bold ms-2">MCP Systemm</span>
 </nav>
 
 <!-- Layout Wrapper -->
@@ -102,9 +102,7 @@
             </ul>
         </div>
     </nav>
-<div style="position:fixed;bottom:5px;right:5px;font-size:10px;color:red;">
-  DEPLOY FROM GITHUB OK
-</div>
+
 
     <!-- MAIN CONTENT (benar) -->
     <main class="main-content flex-grow-1">
