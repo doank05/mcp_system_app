@@ -34,7 +34,7 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link <?= ($active ?? '') == 'dashboard' ? 'active-link' : '' ?>" href="/">
-                        🏠 Dashboard diperbaharui
+                        🏠 Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
