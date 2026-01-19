@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title ?? 'MCP System') ?></title>
+    
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -101,6 +102,9 @@
             </ul>
         </div>
     </nav>
+<div style="position:fixed;bottom:5px;right:5px;font-size:10px;color:red;">
+  DEPLOY FROM GITHUB OK
+</div>
 
     <!-- MAIN CONTENT (benar) -->
     <main class="main-content flex-grow-1">

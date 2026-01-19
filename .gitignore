@@ -84,7 +84,7 @@ phpunit
 #-------------------------
 # Composer
 #-------------------------
-vendor/
+
 
 #-------------------------
 # IDE / Development Files
@@ -125,7 +125,7 @@ _modules/*
 /results/
 /phpunit*.xml
 
-/vendor
+
 /writable
 .env
 .env.*
