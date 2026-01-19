@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/mcpr2937/public_html
+    - /bin/cp -R repositories/mcp_system_app/* $DEPLOYPATH
