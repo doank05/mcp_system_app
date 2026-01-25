@@ -86,6 +86,7 @@ $routes->group('alert', ['filter' => 'level:1'], function($routes){
 // PRODUKSI
 $routes->group('produksi', ['filter' => 'level:1,3'], function($routes){
     $routes->get('/', 'ProduksiController::index');
+    $routes->get('detail/(:num)', 'ProduksiController::detail/$1');
     $routes->get('create', 'ProduksiController::create');
     $routes->post('store', 'ProduksiController::store');
     $routes->get('edit/(:num)', 'ProduksiController::edit/$1');

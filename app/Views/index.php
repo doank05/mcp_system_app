@@ -170,12 +170,236 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
 <?php endforeach ?>
 <?php endif ?>
+
+<!-- ================= FILTER ================= -->
+<form method="get" class="mb-3">
+    <label class="fw-bold">Pilih Periode:</label>
+    <select name="periode" class="form-select w-auto d-inline" onchange="this.form.submit()">
+        <?php foreach (['januari','februari','maret','april','mei','juni','juli','agustus','september','oktober','november','desember'] as $p): ?>
+            <option value="<?= $p ?>" <?= $periode == $p ? 'selected' : '' ?>><?= ucfirst($p) ?></option>
+        <?php endforeach ?>
+    </select>
+</form>
+<!-- ================= CHARTS ================= -->
+
+<div class="row mb-4">
+    <!-- BIOGAS -->
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">📈 Produksi Biogas</div>
+            <div class="card-body">
+                <canvas id="biogasChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <!-- LISTRIK -->
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-warning">⚡ Produksi & Distribusi Listrik</div>
+            <div class="card-body">
+                <canvas id="listrikChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4 justify-content-center">
+    <!-- PIE CHART -->
+    <div class="col-md-4 col-sm-6 col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white fw-bold text-center">
+                🥧 Alokasi Listrik
+            </div>
+            <div class="card-body text-center">
+            <h5 class="fw-bold mb-1">TOTAL</h5>
+            <h4 class="text-primary mb-3" id="totalKwhText"></h4>
+
+            <div class="d-flex justify-content-center">
+                <div style="width:260px; height:260px;">
+                    <canvas id="pieChartListrik"></canvas>
+        </div>
+    </div>
+</div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* ===== AMBIL TOTAL DISTRIBUSI (DARI PHP) ===== */
+const totalKCP    = <?= array_sum(json_decode($kcp, true)) ?>;
+const totalPKS    = <?= array_sum(json_decode($pks, true)) ?>;
+const totalMCP    = <?= array_sum(json_decode($mcp, true)) ?>;
+const totalEstate = <?= array_sum(json_decode($estate, true)) ?>;
+const totalGranul = <?= array_sum(json_decode($granul, true)) ?>;
+
+/* ===== BIOGAS CHART ===== */
+new Chart(document.getElementById('biogasChart'), {
+    type: 'line',
+    data: {
+        labels: <?= $chartLabels ?>,
+        datasets: [
+            {
+                label: 'Flare',
+                data: <?= $chartFlare ?>,
+                borderColor: '#B22222',
+                backgroundColor: 'rgba(178,34,34,0.2)',
+                tension: 0.3
+            },
+            {
+                label: 'Scrubber',
+                data: <?= $chartScrubber ?>,
+                borderColor: '#20B2AA',
+                backgroundColor: 'rgba(32,178,170,0.2)',
+                tension: 0.3
+            },
+            {
+                label: 'Total',
+                data: <?= $chartTotal ?>,
+                borderColor: '#4682B4',
+                backgroundColor: 'rgba(70,130,180,0.2)',
+                tension: 0.3
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true } }
+    }
+});
+
+/* ===== LISTRIK + DISTRIBUSI ===== */
+new Chart(document.getElementById('listrikChart'), {
+    type: 'bar',
+    data: {
+        labels: <?= $labelsListrik ?>,
+        datasets: [
+            { label:'KCP', data:<?= $kcp ?>, backgroundColor:'#4682B4', stack:'s' },
+            { label:'PKS', data:<?= $pks ?>, backgroundColor:'#B22222', stack:'s' },
+            { label:'MCP', data:<?= $mcp ?>, backgroundColor:'#DAA520', stack:'s' },
+            { label:'Estate', data:<?= $estate ?>, backgroundColor:'#20B2AA', stack:'s' },
+            { label:'Granul', data:<?= $granul ?>, backgroundColor:'#7B68EE', stack:'s' },
+            {
+                label:'Total',
+                data:<?= $totalListrik ?>,
+                type:'line',
+                borderColor:'#222',
+                tension:0.3
+            }
+        ]
+    },
+    options:{
+        responsive:true,
+        scales:{ x:{stacked:true}, y:{stacked:true} }
+    }
+});
+
+/* ===== DONUT CHART ALOKASI LISTRIK ===== */
+
+const pieData = [totalKCP, totalPKS, totalMCP, totalEstate, totalGranul];
+const totalAll = pieData.reduce((a,b)=>a+b,0);
+
+// tampilkan total di atas chart
+document.getElementById('totalKwhText').innerText =
+    totalAll.toLocaleString() + ' kWh';
+
+new Chart(document.getElementById('pieChartListrik'), {
+    type: 'doughnut',
+    data: {
+        labels: ['KCP','PKS Gateng','MCP','Estate','Granul'],
+        datasets: [{
+            data: pieData,
+            backgroundColor: [
+                '#4682B4',
+                '#B22222',
+                '#DAA520',
+                '#20B2AA',
+                '#7B68EE'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        cutout: '65%',
+        plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const value = context.raw;
+                        const percent = totalAll > 0
+                            ? (value / totalAll * 100).toFixed(2)
+                            : 0;
+                        return context.label + ': ' 
+                               + value.toLocaleString() + ' kWh (' 
+                               + percent + '%)';
+                    }
+                }
+            }
+        }
+    },
+    plugins: [{
+        id: 'percentLabels',
+        afterDraw(chart) {
+            const { ctx } = chart;
+            const dataset = chart.data.datasets[0];
+            const meta = chart.getDatasetMeta(0);
+
+            meta.data.forEach((arc, i) => {
+                const value = dataset.data[i];
+                const percent = totalAll > 0 ? (value / totalAll * 100).toFixed(1) : 0;
+                if (percent < 5) return;
+
+                const pos = arc.tooltipPosition();
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(percent + '%', pos.x, pos.y);
+            });
+        }
+    }]
+});
+
+
+/* ===== TULIS PERSEN DI SLICE ===== */
+Chart.register({
+    id: 'percentLabels',
+    afterDraw(chart) {
+        const { ctx } = chart;
+        const dataset = chart.data.datasets[0];
+        const meta = chart.getDatasetMeta(0);
+
+        meta.data.forEach((arc, i) => {
+            const value = dataset.data[i];
+            const percent = totalAll > 0 ? (value / totalAll * 100).toFixed(1) : 0;
+            if (percent < 5) return; // kecil jangan ditulis
+
+            const pos = arc.tooltipPosition();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(percent + '%', pos.x, pos.y);
+        });
+    }
+});
+</script>
+
+
+
+</script>
 
 <!-- ================= BUDGET & REALISASI ================= -->
 <?php

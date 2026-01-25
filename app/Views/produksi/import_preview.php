@@ -14,25 +14,36 @@
     <th>TBS</th>
     <th>POME</th>
     <th>Umpan</th>
+    <th>Flare</th>
+    <th>Gas Out</th>
     <th>Biogas</th>
     <th>Listrik</th>
     <th>Kernel</th>
-    <th>kWh/Biogas</th>
-    <th>Biogas/POME</th>
+    <th>KCP</th>
+    <th>PKS</th>
+    <th>MCP</th>
+    <th>Estate</th>
+    <th>Granul</th>
 </tr>
 </thead>
 <tbody>
 <?php foreach ($preview as $p): ?>
+<?php $biogas = $p['flare'] + $p['gas_out_scrubber']; ?>
 <tr>
     <td><?= $p['tanggal'] ?></td>
     <td><?= $p['ton_tbs_olah'] ?></td>
     <td><?= $p['pome'] ?></td>
     <td><?= $p['umpan_bioreaktor'] ?></td>
-    <td><?= $p['produksi_biogas'] ?></td>
+    <td><?= $p['flare'] ?></td>
+    <td><?= $p['gas_out_scrubber'] ?></td>
+    <td><?= $biogas ?></td>
     <td><?= $p['produksi_daya_listrik'] ?></td>
     <td><?= $p['ton_kernel_olah'] ?></td>
-    <td><?= $p['kwh_per_biogas'] ?></td>
-    <td><?= $p['biogas_per_pome'] ?></td>
+    <td><?= $p['kcp'] ?></td>
+    <td><?= $p['pks_gateng'] ?></td>
+    <td><?= $p['mcp'] ?></td>
+    <td><?= $p['estate'] ?></td>
+    <td><?= $p['granul'] ?></td>
 </tr>
 <?php endforeach ?>
 </tbody>
@@ -45,5 +56,4 @@
 </div>
 
 </form>
-
 <?= $this->endSection() ?>

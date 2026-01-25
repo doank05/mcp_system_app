@@ -10,82 +10,64 @@
 
 <div class="row g-3">
 
-    <!-- Tanggal -->
-    <div class="col-md-4">
-        <label class="form-label">Tanggal Produksi</label>
-        <input type="date" name="tanggal" class="form-control" required>
-        <small class="text-muted">Tanggal tidak boleh duplikat</small>
-    </div>
+<div class="col-md-4">
+    <label class="form-label">Tanggal Produksi</label>
+    <input type="date" name="tanggal" class="form-control" required>
+</div>
 
-    <!-- Ton TBS Olah -->
-    <div class="col-md-4">
-        <label class="form-label">Ton TBS Olah</label>
-        <input type="number" step="0.01" name="ton_tbs_olah"
-               class="form-control" placeholder="0.00">
-    </div>
+<div class="col-md-4">
+    <label class="form-label">Ton TBS Olah</label>
+    <input type="number" step="0.01" name="ton_tbs_olah" class="form-control">
+</div>
 
-    <!-- POME -->
-    <div class="col-md-4">
-        <label class="form-label">POME</label>
-        <input type="number" step="0.01" name="pome"
-               class="form-control" placeholder="0.00">
-    </div>
+<div class="col-md-4">
+    <label class="form-label">POME</label>
+    <input type="number" step="0.01" name="pome" class="form-control">
+</div>
 
-    <!-- Umpan Bioreaktor -->
-    <div class="col-md-4">
-        <label class="form-label">Umpan Bioreaktor</label>
-        <input type="number" step="0.01" name="umpan_bioreaktor"
-               class="form-control" placeholder="0.00">
-    </div>
+<div class="col-md-4">
+    <label class="form-label">Umpan Bioreaktor</label>
+    <input type="number" step="0.01" name="umpan_bioreaktor" class="form-control">
+</div>
 
-    <!-- Produksi Biogas -->
-    <div class="col-md-4">
-        <label class="form-label">Produksi Biogas</label>
-        <input type="number" step="0.01" name="produksi_biogas"
-               class="form-control" placeholder="0.00">
-    </div>
+<div class="col-md-4">
+    <label class="form-label">Flare</label>
+    <input type="number" step="0.01" name="flare" class="form-control">
+</div>
 
-    <!-- Produksi Daya Listrik -->
-    <div class="col-md-4">
-        <label class="form-label">Produksi Daya Listrik</label>
-        <input type="number" step="0.01" name="produksi_daya_listrik"
-               class="form-control" placeholder="0.00">
-    </div>
+<div class="col-md-4">
+    <label class="form-label">Gas Out Scrubber</label>
+    <input type="number" step="0.01" name="gas_out_scrubber" class="form-control">
+</div>
 
-    <!-- Ton Kernel Olah -->
-    <div class="col-md-4">
-        <label class="form-label">Ton Kernel Olah</label>
-        <input type="number" step="0.01" name="ton_kernel_olah"
-               class="form-control" placeholder="0.00">
-    </div>
+<div class="col-md-4">
+    <label class="form-label">Produksi Daya Listrik</label>
+    <input type="number" step="0.01" name="produksi_daya_listrik" class="form-control">
+</div>
 
-    <!-- kWh / Biogas -->
-    <div class="col-md-4">
-        <label class="form-label">kWh / Biogas</label>
-        <input type="number" step="0.01" name="kwh_per_biogas"
-               class="form-control" placeholder="0.00">
-    </div>
+<div class="col-md-4">
+    <label class="form-label">Ton Kernel Olah</label>
+    <input type="number" step="0.01" name="ton_kernel_olah" class="form-control">
+</div>
 
-    <!-- Biogas / POME -->
-    <div class="col-md-4">
-        <label class="form-label">Biogas / POME</label>
-        <input type="number" step="0.01" name="biogas_per_pome"
-               class="form-control" placeholder="0.00">
-    </div>
+<hr class="my-3">
+
+<h6>Distribusi Power</h6>
+
+<div class="col-md-4"><label>KCP</label><input type="number" step="0.01" name="kcp" class="form-control"></div>
+<div class="col-md-4"><label>PKS Gateng</label><input type="number" step="0.01" name="pks_gateng" class="form-control"></div>
+<div class="col-md-4"><label>MCP</label><input type="number" step="0.01" name="mcp" class="form-control"></div>
+<div class="col-md-4"><label>Estate</label><input type="number" step="0.01" name="estate" class="form-control"></div>
+<div class="col-md-4"><label>Granul</label><input type="number" step="0.01" name="granul" class="form-control"></div>
 
 </div>
 
 <hr class="my-4">
 
 <div class="d-flex gap-2">
-    <button class="btn btn-primary">
-        💾 Simpan Produksi
-    </button>
-    <a href="/produksi" class="btn btn-secondary">
-        ↩ Kembali
-    </a>
+    <button class="btn btn-primary">💾 Simpan Produksi</button>
+    <a href="/produksi" class="btn btn-secondary">↩ Kembali</a>
 </div>
 
 </form>
-
 <?= $this->endSection() ?>

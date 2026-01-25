@@ -11,15 +11,7 @@
     </a>
 <?php endif; ?>
 
-<?php if (session()->getFlashdata('success')): ?>
-<div class="alert alert-success">
-    <?= session()->getFlashdata('success') ?>
-</div>
-<?php endif ?>
-
 <?php if (canCreate('produksi')): ?>
-<div class="card shadow-sm">
-<div class="card-body table-responsive">
 <form action="/produksi/import" method="post" enctype="multipart/form-data"
       class="card card-body mb-3">
 <?= csrf_field() ?>
@@ -39,90 +31,78 @@
         </button>
     </div>
 </div>
+</form>
 <?php endif; ?>
 
-</form>
 
-<div class="table-responsive">
-<table class="table table-bordered table-striped align-middle">
-    <thead class="table-light text-center">
-        <tr>
-            <th width="50">No</th>
-            <th>Tanggal</th>
-            <th>Ton TBS</th>
-            <th>POME</th>
-            <th>Umpan Bio</th>
-            <th>Biogas</th>
-            <th>Daya Listrik</th>
-            <th>Kernel</th>
-            <th>kWh/Biogas</th>
-            <th>Biogas/POME</th>
-            <th width="130">Aksi</th>
-        </tr>
-    </thead>
-
-    <tbody>
-    <?php if (!empty($data)): ?>
-
-        <?php
-            // Nomor urut aman walau pagination berubah
-            $perPage = $pager ? $pager->getPerPage() : count($data);
-            $currentPage = $pager ? $pager->getCurrentPage() : 1;
-            $no = 1 + ($perPage * ($currentPage - 1));
-        ?>
-
-        <?php foreach ($data as $d): ?>
-        <tr>
-            <td class="text-center"><?= $no++ ?></td>
-            <td class="text-center">
-                <?= date('d-m-Y', strtotime($d['tanggal'])) ?>
-            </td>
-            <td><?= number_format($d['ton_tbs_olah'], 2) ?></td>
-            <td><?= number_format($d['pome'], 2) ?></td>
-            <td><?= number_format($d['umpan_bioreaktor'], 2) ?></td>
-            <td><?= number_format($d['produksi_biogas'], 2) ?></td>
-            <td><?= number_format($d['produksi_daya_listrik'], 2) ?></td>
-            <td><?= number_format($d['ton_kernel_olah'], 2) ?></td>
-            <td><?= number_format($d['kwh_per_biogas'], 2) ?></td>
-            <td><?= number_format($d['biogas_per_pome'], 2) ?></td>
-
-            <td class="text-center">
-                <?php if (canEdit('produksi')): ?>
-                <a href="/produksi/edit/<?= $d['id'] ?>"
-                   class="btn btn-warning btn-sm">
-                    Edit
-                </a>
-                <?php endif; ?>
-
-                <?php if (canDelete('produksi')): ?>
-                <a href="/produksi/delete/<?= $d['id'] ?>"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Yakin hapus data produksi ini?')">
-                    Hapus
-                </a>
-                <?php endif; ?>
-            </td>
-        </tr>
-        <?php endforeach ?>
-
-    <?php else: ?>
-        <tr>
-            <td colspan="11" class="text-center text-muted py-3">
-                Belum ada data produksi
-            </td>
-        </tr>
-    <?php endif ?>
-    </tbody>
-</table>
+<?php if (session()->getFlashdata('success')): ?>
+<div class="alert alert-success">
+    <?= session()->getFlashdata('success') ?>
 </div>
+<?php endif ?>
 
+<?php if (!empty($missingDates)): ?>
+<div class="alert alert-warning">
+    <strong>⚠ Data produksi belum diinput untuk tanggal:</strong><br>
+    <?= implode(', ', array_map(function($d){
+        return date('d-m-Y', strtotime($d));
+    }, $missingDates)) ?>
+</div>
+<?php endif; ?>
+
+
+<table class="table table-bordered table-striped align-middle">
+<thead class="table-light text-center">
+<tr>
+    <th>No</th>
+    <th>Tanggal</th>
+    <th>Biogas</th>
+    <th>Daya Listrik</th>
+    <th>kWh/Biogas</th>
+    <th>Biogas/POME</th>
+    <th width="200">Aksi</th>
+</tr>
+</thead>
+
+<tbody>
+<?php
+$perPage = $pager ? $pager->getPerPage() : count($data);
+$currentPage = $pager ? $pager->getCurrentPage() : 1;
+$no = 1 + ($perPage * ($currentPage - 1));
+?>
+
+<?php foreach ($data as $d): ?>
+<?php
+$biogas = $d['flare'] + $d['gas_out_scrubber'];
+$kwh = $biogas > 0 ? $d['produksi_daya_listrik'] / $d['gas_out_scrubber'] : 0;
+$ratio = $d['umpan_bioreaktor'] > 0 ? $biogas / $d['umpan_bioreaktor'] : 0;
+?>
+<tr>
+    <td class="text-center"><?= $no++ ?></td>
+    <td class="text-center"><?= date('d-m-Y', strtotime($d['tanggal'])) ?></td>
+    <td><?= number_format($biogas,2) ?></td>
+    <td><?= number_format($d['produksi_daya_listrik'],2) ?></td>
+    <td><?= number_format($kwh,2) ?></td>
+    <td><?= number_format($ratio,2) ?></td>
+    <td class="text-center">
+        <a href="/produksi/detail/<?= $d['id'] ?>" class="btn btn-info btn-sm">Detail</a>
+
+        <?php if (canEdit('produksi')): ?>
+        <a href="/produksi/edit/<?= $d['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+        <?php endif; ?>
+
+        <?php if (canDelete('produksi')): ?>
+        <a href="/produksi/delete/<?= $d['id'] ?>" class="btn btn-danger btn-sm"
+           onclick="return confirm('Yakin hapus data produksi ini?')">Hapus</a>
+        <?php endif; ?>
+    </td>
+</tr>
+<?php endforeach ?>
+</tbody>
+</table>
 
 <div class="mt-3 d-flex justify-content-center">
     <?= $pager->links('default', 'bootstrap') ?>
-</div>
-
-
-</div>
 </div>
 
 <?= $this->endSection() ?>
